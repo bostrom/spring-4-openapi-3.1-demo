@@ -1,0 +1,23 @@
+{
+  "name": "test-swagger-openapi-3_1",
+  "version": "1.0.0",
+  "description": "TypeScript client generator for Spring Boot 4 OpenAPI 3.1 demo",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "generate": "orval",
+    "generate:watch": "orval --watch",
+    "type-check": "tsc --noEmit",
+    "build": "tsc",
+    "clean": "rm -rf dist src/api"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "orval": "^7.20.0",
+    "prettier": "^3.8.1",
+    "typescript": "^5.7.3"
+  }
+}

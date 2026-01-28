@@ -151,7 +151,8 @@ components:
           example: 2028
     PaymentDto:
       type: object
-      description: Payment information with composition schema
+      description: Payment information demonstrating OpenAPI 3.1 nullable types with
+        composition schemas
       properties:
         paymentId:
           type: string
@@ -194,6 +195,13 @@ components:
           type:
           - object
           - "null"
+          $ref: "#/components/schemas/BillingAddressDto"
           description: Billing address - can be an address object or null
+        shippingAddress:
+          type:
+          - object
+          - "null"
+          $ref: "#/components/schemas/BillingAddressDto"
+          description: "Shipping address (ANTI-PATTERN: will create superfluous $ref)"
           oneOf:
           - $ref: "#/components/schemas/BillingAddressDto"
