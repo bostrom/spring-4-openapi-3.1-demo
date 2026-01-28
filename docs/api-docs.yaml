@@ -1,0 +1,199 @@
+openapi: 3.1.0
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+tags:
+- name: Payments
+  description: Payment processing endpoints demonstrating OpenAPI 3.1 composition
+    schemas
+paths:
+  /api/payments:
+    post:
+      tags:
+      - Payments
+      summary: Create new payment
+      description: Creates payment with either credit card or bank transfer method
+      operationId: createPayment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PaymentDto"
+  /api/payments/{id}:
+    get:
+      tags:
+      - Payments
+      summary: Get payment by ID
+      description: "Returns payment details with oneOf composition schema and types=['object',\
+        \ 'null']"
+      operationId: getPayment
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PaymentDto"
+  /api/payments/bank-transfer/{id}:
+    get:
+      tags:
+      - Payments
+      summary: Get payment with bank transfer
+      description: Example showing bank transfer as payment method
+      operationId: getPaymentWithBankTransfer
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PaymentDto"
+  /:
+    get:
+      tags:
+      - demo-application
+      operationId: home
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+components:
+  schemas:
+    BankTransferDto:
+      type: object
+      description: Bank transfer payment details
+      properties:
+        accountNumber:
+          type: string
+          description: Account number
+          example: 123456789
+        routingNumber:
+          type: string
+          description: Routing number
+          example: 987654321
+        bankName:
+          type: string
+          description: Bank name
+          example: First National Bank
+        accountHolder:
+          type: string
+          description: Account holder name
+          example: Jane Smith
+    BillingAddressDto:
+      type: object
+      description: Billing address information
+      properties:
+        street:
+          type: string
+          description: Street address
+          example: 123
+        city:
+          type: string
+          description: City
+          example: San Francisco
+        state:
+          type: string
+          description: State or province
+          example: CA
+        postalCode:
+          type: string
+          description: Postal code
+          example: 94105
+        country:
+          type: string
+          description: Country code
+          example: US
+    CreditCardDto:
+      type: object
+      description: Credit card payment information
+      properties:
+        cardNumber:
+          type: string
+          description: Card number
+          example: 4111111111111111
+        holderName:
+          type: string
+          description: Cardholder name
+          example: John Doe
+        expiryMonth:
+          type: string
+          description: Expiry month
+          example: 12
+        expiryYear:
+          type: string
+          description: Expiry year
+          example: 2028
+    PaymentDto:
+      type: object
+      description: Payment information with composition schema
+      properties:
+        paymentId:
+          type: string
+          description: Payment ID
+          example: pay_12345
+        amount:
+          type: integer
+          format: int64
+          description: Payment amount in cents
+          example: 5000
+        currency:
+          type: string
+          description: Currency code
+          example: USD
+        paymentMethod:
+          type:
+          - object
+          - "null"
+          description: "Payment method details - can be credit card or bank transfer,\
+            \ or null"
+          oneOf:
+          - $ref: "#/components/schemas/CreditCardDto"
+          - $ref: "#/components/schemas/BankTransferDto"
+        status:
+          type:
+          - object
+          - "null"
+          description: Payment status - can be a status enum or null
+          oneOf:
+          - type: string
+            description: Payment status enumeration
+            enum:
+            - PENDING
+            - PROCESSING
+            - COMPLETED
+            - FAILED
+            - REFUNDED
+            - CANCELLED
+        billingAddress:
+          type:
+          - object
+          - "null"
+          description: Billing address - can be an address object or null
+          oneOf:
+          - $ref: "#/components/schemas/BillingAddressDto"
