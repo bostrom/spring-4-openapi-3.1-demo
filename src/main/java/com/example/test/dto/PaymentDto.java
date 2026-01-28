@@ -18,6 +18,14 @@ public class PaymentDto {
       "null" }, oneOf = { CreditCardDto.class, BankTransferDto.class })
   private Object paymentMethod;
 
+  @Schema(description = "Payment status - can be a status enum or null", types = { "object", "null" }, oneOf = {
+      PaymentStatusDto.class })
+  private Object status;
+
+  @Schema(description = "Billing address - can be an address object or null", types = { "object", "null" }, oneOf = {
+      BillingAddressDto.class })
+  private Object billingAddress;
+
   // Getters and setters
   public String getPaymentId() {
     return paymentId;
@@ -49,5 +57,21 @@ public class PaymentDto {
 
   public void setPaymentMethod(Object paymentMethod) {
     this.paymentMethod = paymentMethod;
+  }
+
+  public Object getStatus() {
+    return status;
+  }
+
+  public void setStatus(Object status) {
+    this.status = status;
+  }
+
+  public Object getBillingAddress() {
+    return billingAddress;
+  }
+
+  public void setBillingAddress(Object billingAddress) {
+    this.billingAddress = billingAddress;
   }
 }
