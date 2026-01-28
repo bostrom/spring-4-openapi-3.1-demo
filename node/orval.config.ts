@@ -11,6 +11,7 @@ export default defineConfig({
       client: 'react-query',
       mock: true,
       override: {
+        enumGenerationType: 'const',
         // mutator: {
         //   path: './src/api/mutator/customClient.ts',
         //   name: 'customClient',
